@@ -1,0 +1,157 @@
+<div class="col-12">
+    <div class="d-flex flex-wrap align-items-center">
+        <div>
+            <h3 class="card-title">Quản lý người dùng</h3>
+        </div>
+        <div class="ms-lg-auto mx-sm-auto mx-lg-0">
+            <ul class="list-inline d-flex">
+                <li class="me-4">
+                    <input type="text" placeholder="Nhấn enter để tìm kiếm.." class="form-control" (keyup.enter)="searchData()" [(ngModel)]="search.textSearch">
+                </li>
+                <li>
+                    <button class="btn btn-primary" (click)="openEditForm()"><i class="fas fa-plus-circle"></i> Thêm mới</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">STT</th>
+                <th>Tên</th>
+                <th>Địa chỉ</th>
+                <th>Email</th>
+                <th>SDT</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of users; let i = index">
+                <td class="mdl-data-table__cell--non-numeric text-center">{{((search.pageIndex - 1) * search.pageSize) + i + 1}}</td>
+                <td>{{item.userName}}</td>
+                <td>{{item.address}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.numberPhone}}</td>
+                <td class="text-center">
+                    <a class="btn btn-success margin-right-1" [routerLink]="'/decentralization/' + item.userId" title="Phân quyền người dùng">
+                        <i class="far fa-user"></i> Phân quyền
+                    </a>
+                    <button class="btn btn-warning" (click)="openEditForm(item.userId)" title="Chỉnh sửa người dùng">
+                        <i class="far fa-edit"></i> Sửa
+                    </button>
+                    <button class="btn btn-danger margin-left-1" (click)="openDeleteForm(item.userId)" title="Xóa người dùng">
+                        <i class="far fa-trash-alt"></i> Xóa
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p-paginator [rows]="search.pageSize" [totalRecords]="totalData" (onPageChange)="onPageChange($event)"></p-paginator>
+    </div>
+</div>
+<!-- Create, Edit dialog -->
+<p-dialog [header]="userId ? 'Chỉnh sửa người dùng' : 'Thêm mới người dùng'" [(visible)]="isShowModal" [modal]="true" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <form [formGroup]="userForm">
+        <div class="form-group">
+            <label class="col-lg-12">Nhóm tài khoản</label>
+            <div class="col-lg-12">
+                <p-dropdown 
+                    [options]="positions" 
+                    optionLabel="userPositionName" 
+                    optionValue="userPositionId" 
+                    formControlName="userPositionId" 
+                    placeholder="Nhóm tài khoản..."
+                    [styleClass]="'w-100'"
+                    >
+                </p-dropdown>
+                <div class="error pl-0" *ngIf="(form.userPositionId.touched || isSubmit)">
+                    <p class="text-danger" *ngIf="form.userPositionId.errors?.required">Nhóm tài khoản không thể để trống</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Tên tài khoản</label>
+            <div class="col-lg-12">
+                <input type="text" pInputText formControlName="userName" placeholder="Tên tài khoản..." class="w-100"/>
+                <div class="error pl-0" *ngIf="(form.userName.touched || isSubmit)">
+                    <p class="text-danger" *ngIf="form.userName.errors?.required">Tên tài khoản không thể để trống</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Họ tên</label>
+            <div class="col-lg-12">
+                <input type="text" pInputText formControlName="fullName" placeholder="Họ tên..." class="w-100"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Email</label>
+            <div class="col-lg-12">
+                <input type="text" pInputText formControlName="email" placeholder="Email..." class="w-100"/>
+                <div class="error pl-0" *ngIf="(form.email.touched || isSubmit)">
+                    <p class="text-danger" *ngIf="form.email.errors?.required">Email không thể để trống</p>
+                    <p class="text-danger" *ngIf="form.email.errors?.email">Email không đúng định dạng</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Số điện thoại</label>
+            <div class="col-lg-12">
+                <input type="text" pInputText formControlName="numberPhone" placeholder="Số điện thoại..." class="w-100"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Địa chỉ</label>
+            <div class="col-lg-12">
+                <input type="text" pInputText formControlName="address" placeholder="Địa chỉ..." class="w-100"/>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="!userId">
+            <label class="col-lg-12">Mật khẩu</label>
+            <div class="col-lg-12">
+                <input type="password" pInputText formControlName="passWord" placeholder="Mật khẩu..." class="w-100"/>
+                <div class="error pl-0" *ngIf="(form.passWord.touched || isSubmit)">
+                    <p class="text-danger" *ngIf="form.passWord.errors?.required">Mật khẩu không thể để trống</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Trạng thái</label>
+            <div class="col-lg-12">
+                <p-dropdown 
+                    [options]="userStatus" 
+                    optionLabel="name" 
+                    optionValue="status" 
+                    formControlName="status" 
+                    placeholder="Trạng thái..."
+                    [styleClass]="'w-100'"
+                    >
+                </p-dropdown>
+                <div class="error pl-0" *ngIf="(form.status.touched || isSubmit)">
+                    <p class="text-danger" *ngIf="form.status.errors?.required">Trạng thái không thể để trống</p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-12">Ảnh đại diện</label>
+            <div class="col-lg-12">
+                <p-fileUpload #fubauto mode="basic" name="avatar[]" [customUpload]="true" accept="image/*" maxFileSize="1000000" (onSelect)="onUploadAvatar($event)" chooseLabel="Upload"></p-fileUpload>
+                <img [src]="previewAvatar ? fullAvatarPath : '/assets/images/no-image.jpg'" class="rounded mt-3" width="200" height="200" style="object-fit: cover; display: block;">
+            </div>
+        </div>
+        <hr>
+        <div class="form-footer">
+            <button class="btn btn-primary margin-right-1" title="Lưu" (click)="save()">
+                <i class="far fa-save"></i> Lưu
+            </button>
+            <button class="btn btn-secondary" title="Đóng" (click)="isShowModal=false">
+                <i class="far fa-times"></i> Đóng
+            </button>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Delete dialog -->
+<p-confirmDialog header="" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,47 @@
+<aside class="left-sidebar" data-sidebarbg="skin6">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+      <!-- Sidebar navigation-->
+      <nav class="sidebar-nav">
+        <ul id="sidebarnav">
+          <!-- User Profile-->
+          <li class="sidebar-item" *ngFor="let item of menuData">
+            <label [class]="'sidebar-link waves-effect waves-dark sidebar-link ' + (item.selected ? 'active': '')" (click)="menuClick(item.link)" aria-expanded="false">
+              <i [class]="item.icon"></i>
+              <span class="hide-menu">{{item.name}}</span>
+            </label>
+            <ul class="menu-child" *ngIf="item.childs && item.childs.length > 0">
+                <li class="sidebar-item d-flex" *ngFor="let child of item.childs">
+                    <i class="mdi me-2 mdi-checkbox-blank-circle-outline"></i>
+                    <label (click)="menuClick(child.link)" class="child-sidebar-link waves-effect waves-dark">{{child.name}}</label>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+    <div class="sidebar-footer">
+      <div class="row">
+        <div class="col-4 link-wrap">
+          <!-- item-->
+          <a href="" class="link" data-toggle="tooltip" title="" data-original-title="Settings">
+            <i class="ti-settings"></i>
+          </a>
+        </div>
+        <div class="col-4 link-wrap">
+          <!-- item-->
+          <a href="" class="link" data-toggle="tooltip" title="" data-original-title="Email">
+            <i class="mdi mdi-gmail"></i>
+          </a>
+        </div>
+        <div class="col-4 link-wrap">
+          <!-- item-->
+          <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="Đăng xuất" data-original-title="Logout" (click)="logout()">
+            <i class="mdi mdi-power"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>

@@ -1,0 +1,63 @@
+<div class="row">
+    <div>
+        <h3 class="card-title">Trang cá nhân</h3>
+    </div>
+    <div class="col-lg-4 col-xlg-3 col-md-5">
+        <div class="card text-center">
+            <div class="card-body profile-card">
+                <div class="mt-4">
+                    <div class="avatar-wrapper">
+                        <img [src]="user.avatar ? apiUrl + '/' + user.avatar :'../assets/images/default_user.png'" class="rounded-circle avatar" width="150">
+                        <div class="overlay">
+                            <label class="cursor-pointer" for="avatar-upload" pTooltip="Nhấn để thay đổi ảnh đại diện" ><i class="fas fa-camera" style="font-size: 25px;"></i></label>
+                            <input type="file" class="d-none" id="avatar-upload" (change)="onUploadAvatar($event)" accept="image/*">
+                          </div>
+                    </div>
+                    <h4 class="card-title mt-2">{{user.fullName}}</h4>
+                    <h6 class="card-subtitle">{{user.positionName}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-xlg-9 col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-horizontal form-material mx-2" (ngSubmit)="updateProfile()" [formGroup]="profileForm">
+                    <div class="form-group">
+                        <label class="col-md-12 mb-0">Tên đầy đủ</label>
+                        <div class="col-md-12">
+                            <input type="text" [attr.disabled]="!isEdit? '': null" placeholder="Tên đầy đủ" formControlName="fullName" class="form-control ps-0 form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="example-email" class="col-md-12">Email</label>
+                        <div class="col-md-12">
+                            <input type="email" [attr.disabled]="!isEdit? '': null" placeholder="Nhập Email" formControlName="email" class="form-control ps-0 form-control-line" name="example-email" id="example-email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 mb-0">Số điện thoại</label>
+                        <div class="col-md-12">
+                            <input type="text" [attr.disabled]="!isEdit? '': null" placeholder="0914...." formControlName="numberPhone" class="form-control ps-0 form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12 mb-0">Địa chỉ</label>
+                        <div class="col-md-12">
+                            <input type="text" [attr.disabled]="!isEdit? '': null" placeholder="Địa chỉ" formControlName="address" class="form-control ps-0 form-control-line">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 d-flex">
+                            <button class="btn btn-success mx-auto mx-md-0 text-white" type="button" *ngIf="!isEdit; else saveBtn" (click)="isEdit = true">Chỉnh sửa thông tin</button>
+                            <ng-template #saveBtn>
+                                <button class="btn btn-primary mx-auto mx-md-0 text-white" #saveBtn type="submit">Lưu chỉnh sửa</button>
+                            </ng-template>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>

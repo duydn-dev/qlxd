@@ -1,0 +1,30 @@
+<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        <app-menu-top *ngIf="isLogin || isNotFound"></app-menu-top>
+        <app-menu-left *ngIf="isLogin || isNotFound"></app-menu-left>
+        <div *ngIf="isLogin; else loginBlock" class="page-wrapper">
+            <div class="p-2 component-wraper">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <router-outlet></router-outlet>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer" *ngIf="isLogin"> © 2022 bản quyền bởi Duydn
+            </footer>
+        </div>
+        <ng-template #loginBlock>
+            <router-outlet></router-outlet>
+        </ng-template>
+    </div>
+
+    <p-toast position="bottom-right"></p-toast>
+
+<p-dialog [(visible)]="progressSpinnerDlg" styleClass="ui-dialog-transparent" [closable]="false"
+    [showHeader]="false" [resizable]="false" [modal]="true">
+    <p-progressSpinner [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="3" animationDuration=".5s"></p-progressSpinner>
+</p-dialog>

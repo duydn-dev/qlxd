@@ -1,0 +1,22 @@
+<div class="col-12">
+    <div class="d-flex flex-wrap align-items-center">
+        <div>
+            <h3 class="card-title">Phân quyền người dùng</h3>
+        </div>
+        <div class="ms-lg-auto mx-sm-auto mx-lg-0">
+            <ul class="list-inline d-flex">
+                <li>
+                    <button
+                        class="btn btn-primary" (click)="save()">
+                        <i class="far fa-save"></i> Lưu
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <p-tree [value]="data" selectionMode="checkbox" [(selection)]="selectedFiles"
+                    [propagateSelectionUp]="true" [propagateSelectionDown]="true" (onNodeSelect)="onNodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)">
+                </p-tree>
+    </div>
+</div>
