@@ -31,3 +31,4 @@ BusinessLogic/obj/Debug/net5.0/BusinessLogic.csprojAssemblyReference.cache
 CmsV2/wwwroot/dist/js/main-client.js
 /Api/wwwroot/Temps/**
 *.user
+/Api/Logs
