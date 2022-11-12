@@ -35,7 +35,7 @@ namespace BusinessLogic.Repository
         }
         public async Task SendNotificationByLocalityId(Notification notification, int localityId)
         {
-            var users = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.LocalityId == localityId).ToArrayAsync();
+            var users = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.LocalityId == localityId).ToListAsync();
             var lstNotify = new List<Notification>();
             foreach (var item in users)
             {
@@ -112,7 +112,7 @@ namespace BusinessLogic.Repository
             try
             {
                 var currentUser = await _userRepository.GetIdentityUser();
-                var user = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.MaDoiTuong == request.MaDoiTuong).ToArrayAsync();
+                var user = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.MaDoiTuong == request.MaDoiTuong).ToListAsync();
                 var lstNotify = new List<Notification>();
                 foreach (var item in user)
                 {

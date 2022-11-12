@@ -37,13 +37,13 @@ namespace BusinessLogic.Repository
         {
             // th chưa nhập dl
             var conf = (await _configRepository.GetExpireDayAsync()).ResponseData;
-            var existsApi3 = await _unitOfWork.GetAsQueryable<SanXuat>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi4 = await _unitOfWork.GetAsQueryable<TieuThu>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi5 = await _unitOfWork.GetAsQueryable<Nhap>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi6 = await _unitOfWork.GetAsQueryable<TonKho>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi7 = await _unitOfWork.GetAsQueryable<NguyenLieu>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi8 = await _unitOfWork.GetAsQueryable<Khac>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
-            var existsApi9 = await _unitOfWork.GetAsQueryable<QuyBinhOnGium>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToArrayAsync();
+            var existsApi3 = await _unitOfWork.GetAsQueryable<SanXuat>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi4 = await _unitOfWork.GetAsQueryable<TieuThu>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi5 = await _unitOfWork.GetAsQueryable<Nhap>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi6 = await _unitOfWork.GetAsQueryable<TonKho>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi7 = await _unitOfWork.GetAsQueryable<NguyenLieu>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi8 = await _unitOfWork.GetAsQueryable<Khac>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
+            var existsApi9 = await _unitOfWork.GetAsQueryable<QuyBinhOnGium>().Where(n => n.NgayBc.Value.Date >= conf.PrevWeekStart.Value.Date && n.NgayBc.Value.Date <= conf.PrevWeekEnd.Value.Date).Select(n => n.MaDoiTuong).Distinct().ToListAsync();
 
             return Response<object>.CreateSuccessResponse(await _unitOfWork.GetAsQueryable<DoiTuongQuanLy>().OrderBy(n => n.MaDoiTuong).ThenBy(n => n.ParentId).Select(n => new
             {
@@ -56,7 +56,7 @@ namespace BusinessLogic.Repository
                 existsApi7 = existsApi7.Contains(n.MaDoiTuong),
                 existsApi8 = existsApi8.Contains(n.MaDoiTuong),
                 existsApi9 = existsApi9.Contains(n.MaDoiTuong),
-            }).ToArrayAsync());
+            }).ToListAsync());
         }
         public async Task<Response<object>> IllogicalDataAsync()
         {
@@ -86,7 +86,7 @@ namespace BusinessLogic.Repository
                             d.TenDoiTuong,
                             Nhap = g1D != null ? g1D.Nhap : 0,
                             TieuThu = g2D != null ? g2D.LuongBan : 0
-                        }).ToArrayAsync();
+                        }).ToListAsync();
             return Response<object>.CreateSuccessResponse(query);
         }
         public async Task<Response<object>> DistributionSystemDataAsync()
@@ -107,7 +107,7 @@ namespace BusinessLogic.Repository
                 n.LoaiDoiTuong,
                 cuaHangTrucThuoc = cuaHangTrucThuoc.Where(m => m.MaDoiTuongCha == n.MaDoiTuong).Count(),
                 cuaHang = cuaHangThuocDaiLy.Where(m => daily.Where(s => s.MaDoiTuongCha == n.MaDoiTuong).Select(s => s.MaDoiTuongCon).Contains(m.MaDoiTuongCha)).Count()
-            }).ToArrayAsync();
+            }).ToListAsync();
             var tndmResult = await parents.Select(n => new
             {
                 n.MaDoiTuong,
@@ -115,7 +115,7 @@ namespace BusinessLogic.Repository
                 n.LoaiDoiTuong,
                 Daily = childs.Where(m => m.LoaiDoiTuongCon == (int)LoaiDoiTuongEnum.Dlbl && m.MaDoiTuongCha == n.MaDoiTuong).Count(),
                 Cuahang = childs.Where(m => m.LoaiDoiTuongCon == (int)LoaiDoiTuongEnum.Ch && m.MaDoiTuongCha == n.MaDoiTuong).Count(),
-            }).ToArrayAsync();
+            }).ToListAsync();
 
             return Response<object>.CreateSuccessResponse(new
             {
@@ -233,7 +233,7 @@ namespace BusinessLogic.Repository
                                        cl.TenChungLoai,
                                        t.SoLuong,
                                        t.Nam
-                                   }).ToArrayAsync();
+                                   }).ToListAsync();
                 var thucTe = await _unitOfWork.GetAsQueryable<Nhap>().Where(n => n.NgayBc.Value.Year == year && n.AprrovedStatus == ApprovedStatus.Approve)
                     .GroupBy(n => new { n.MaDoiTuong, n.ChungLoai})
                     .Select(n => new
@@ -242,7 +242,7 @@ namespace BusinessLogic.Repository
                         n.Key.ChungLoai,
                         LuongNhap = n.Select(m => m.LuongNhap).Sum()
                     })
-                    .ToArrayAsync();
+                    .ToListAsync();
                 var join = (from q in query
                             join t in thucTe on q.MaDoiTuong equals t.MaDoiTuong into g
                             from gr in g.DefaultIfEmpty()

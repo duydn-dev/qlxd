@@ -2223,7 +2223,7 @@ namespace BusinessLogic.Repository
         #endregion
 
         #region ExportExcel
-        public async Task<GiayDangKyKinhDoanh[]> ExportExcelApi1Async(GetListApiRequestDto request)
+        public async Task<List<GiayDangKyKinhDoanh>> ExportExcelApi1Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2238,7 +2238,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.ThoiGianCapNhat.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.ThoiGianCapNhat.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2247,7 +2247,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<HeThongPhanPhoi[]> ExportExcelApi2Async(GetListApiRequestDto request)
+        public async Task<List<HeThongPhanPhoi>> ExportExcelApi2Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2262,7 +2262,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.ToDate.HasValue, n => n.ThoiGianCapNhat.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuongCha)
                      .ThenBy(n => n.MaDoiTuongCon)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2271,7 +2271,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<SanXuat[]> ExportExcelApi3Async(GetListApiRequestDto request)
+        public async Task<List<SanXuat>> ExportExcelApi3Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2289,7 +2289,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2298,7 +2298,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<TieuThu[]> ExportExcelApi4Async(GetListApiRequestDto request)
+        public async Task<List<TieuThu>> ExportExcelApi4Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2316,7 +2316,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2325,7 +2325,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<Nhap[]> ExportExcelApi5Async(GetListApiRequestDto request)
+        public async Task<List<Nhap>> ExportExcelApi5Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2343,7 +2343,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2352,7 +2352,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<TonKho[]> ExportExcelApi6Async(GetListApiRequestDto request)
+        public async Task<List<TonKho>> ExportExcelApi6Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2370,7 +2370,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2379,7 +2379,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<NguyenLieu[]> ExportExcelApi7Async(GetListApiRequestDto request)
+        public async Task<List<NguyenLieu>> ExportExcelApi7Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2397,7 +2397,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2406,7 +2406,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<Khac[]> ExportExcelApi8Async(GetListApiRequestDto request)
+        public async Task<List<Khac>> ExportExcelApi8Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2424,7 +2424,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2433,7 +2433,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<QuyBinhOnGium[]> ExportExcelApi9Async(GetListApiRequestDto request)
+        public async Task<List<QuyBinhOnGium>> ExportExcelApi9Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2451,7 +2451,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBc.Value.Date >= request.FromDate)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBc.Value.Date <= request.ToDate)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2460,7 +2460,7 @@ namespace BusinessLogic.Repository
                 return null;
             }
         }
-        public async Task<DuKienNhap[]> ExportExcelApi10Async(GetListApiRequestDto request)
+        public async Task<List<DuKienNhap>> ExportExcelApi10Async(GetListApiRequestDto request)
         {
             try
             {
@@ -2477,7 +2477,7 @@ namespace BusinessLogic.Repository
                      .WhereIf(request.FromDate.HasValue, n => n.NgayBC.Date >= request.FromDate.Value.Date)
                      .WhereIf(request.ToDate.HasValue, n => n.NgayBC.Date <= request.ToDate.Value.Date)
                      .OrderBy(n => n.MaDoiTuong)
-                     .ToArrayAsync();
+                     .ToListAsync();
                 return data;
             }
             catch (Exception ex)
@@ -2609,7 +2609,7 @@ namespace BusinessLogic.Repository
                                 heThongPhanPhois.Add(hethong);
                             }
                             IEnumerable<string> tenHeThongPhanPhois = heThongPhanPhois.Select(n => n.TenHeThongPhanPhoi.ToLower());
-                            var existsDoiTuong = await _unitOfWork.GetAsQueryable<HeThongPhanPhoi>().Where(n => n.MaDoiTuongCha == user.MaDoiTuong.Value && tenHeThongPhanPhois.Contains(n.TenHeThongPhanPhoi.ToLower())).Select(n => n.TenHeThongPhanPhoi.ToLower()).ToArrayAsync();
+                            var existsDoiTuong = await _unitOfWork.GetAsQueryable<HeThongPhanPhoi>().Where(n => n.MaDoiTuongCha == user.MaDoiTuong.Value && tenHeThongPhanPhois.Contains(n.TenHeThongPhanPhoi.ToLower())).Select(n => n.TenHeThongPhanPhoi.ToLower()).ToListAsync();
 
                             // insert vào đối tượng quản lý trước
                             IEnumerable<DoiTuongQuanLy> importDt = heThongPhanPhois.Where(n => !existsDoiTuong.Contains(n.TenHeThongPhanPhoi.ToLower())).Select(n => new DoiTuongQuanLy

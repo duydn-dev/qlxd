@@ -114,77 +114,46 @@ namespace BusinessLogic.Repository
             user.PassWord = "";
             return new Response<User>(true, StatusCodes.Status200OK, "Lấy dữ liệu thành công !", user);
         }
-        public async Task<Response<UserCreateDto>> Create(UserCreateDto request)
+        public async Task<UserCreateDto> Create(UserCreateDto request)
         {
-            try
-            {
-                request.CreatedBy = (request.UserId == Guid.Empty) ? (await GetIdentityUser()).UserId : request.UserId;
-                request.UserId = Guid.NewGuid();
-                request.CreatedDate = DateTime.Now;
-                request.PassWord = Md5Encrypt.MD5Hash(request.PassWord);
+            request.CreatedBy = (request.UserId == Guid.Empty) ? (await GetIdentityUser()).UserId : request.UserId;
+            request.UserId = Guid.NewGuid();
+            request.CreatedDate = DateTime.Now;
+            request.PassWord = Md5Encrypt.MD5Hash(request.PassWord);
 
-                var setupCode = _twoFactorAuthenticator.GenerateSetupCode(CommonConstant.Issuer, CommonConstant.AppName, request.UserName, false);
-                var userMapped = _mapper.Map<UserCreateDto, User>(request);
-                userMapped.CreatedCode = setupCode.ManualEntryKey;
-                await _unitOfWork.GetRepository<User>().Add(userMapped);
-                await _unitOfWork.SaveAsync();
-                return Response<UserCreateDto>.CreateSuccessResponse(request);
-            }
-            catch (Exception ex)
-            {
-                await _logRepository.ErrorAsync(ex);
-                return Response<UserCreateDto>.CreateErrorResponse(ex);
-            }
+            var setupCode = _twoFactorAuthenticator.GenerateSetupCode(CommonConstant.Issuer, CommonConstant.AppName, request.UserName, false);
+            var userMapped = _mapper.Map<UserCreateDto, User>(request);
+            userMapped.CreatedCode = setupCode.ManualEntryKey;
+            await _unitOfWork.GetRepository<User>().Add(userMapped);
+            await _unitOfWork.SaveAsync();
+            return request;
         }
 
-        public async Task<Response<bool>> Delete(Guid userId)
+        public async Task<bool> Delete(Guid userId)
         {
-            try
-            {
-                await _unitOfWork.GetRepository<UserRole>().DeleteByExpression(n => n.UserId == userId);
-                await _unitOfWork.GetRepository<User>().DeleteByExpression(n => n.UserId == userId);
-                await _unitOfWork.SaveAsync();
-                return Response<bool>.CreateSuccessResponse(true);
-            }
-            catch (Exception ex)
-            {
-                await _logRepository.ErrorAsync(ex);
-                return Response<bool>.CreateErrorResponse(ex);
-            }
+            await _unitOfWork.GetRepository<UserRole>().DeleteByExpression(n => n.UserId == userId);
+            await _unitOfWork.GetRepository<User>().DeleteByExpression(n => n.UserId == userId);
+            await _unitOfWork.SaveAsync();
+            return true;
         }
 
-        public async Task<Response<bool>> DeleteMany(List<Guid> userIds)
+        public async Task<bool> DeleteMany(List<Guid> userIds)
         {
-            try
-            {
-                await _unitOfWork.GetRepository<User>().DeleteByExpression(n => userIds.Contains(n.UserId));
-                await _unitOfWork.SaveAsync();
-                return Response<bool>.CreateSuccessResponse(true);
-            }
-            catch (Exception ex)
-            {
-                await _logRepository.ErrorAsync(ex);
-                return Response<bool>.CreateErrorResponse(ex);
-            }
+            await _unitOfWork.GetRepository<User>().DeleteByExpression(n => userIds.Contains(n.UserId));
+            await _unitOfWork.SaveAsync();
+            return true;
         }
 
         public async Task<Response<UserCreateDto>> Update(UserCreateDto request)
         {
-            try
-            {
-                var user = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.UserId == request.UserId).FirstOrDefaultAsync();
-                var setupCode = _twoFactorAuthenticator.GenerateSetupCode(CommonConstant.Issuer, CommonConstant.AppName, request.UserName, false);
-                request.PassWord = user.PassWord;
-                var userMapped = _mapper.Map<UserCreateDto, User>(request, user);
-                userMapped.CreatedCode = setupCode.ManualEntryKey;
-                await _unitOfWork.SaveAsync();
-                return Response<UserCreateDto>.CreateSuccessResponse(request);
-            }
-            catch (Exception ex)
-            {
-                await _logRepository.ErrorAsync(ex);
-                return Response<UserCreateDto>.CreateErrorResponse(ex);
-            }
+            var user = await _unitOfWork.GetRepository<User>().GetByExpression(n => n.UserId == request.UserId).FirstOrDefaultAsync();
+            if (user == null) return new Response<UserCreateDto>(false, StatusCodes.Status404NotFound, "Không tìm thấy tài khoản này", null);
+            var setupCode = _twoFactorAuthenticator.GenerateSetupCode(CommonConstant.Issuer, CommonConstant.AppName, request.UserName, false);
+            request.PassWord = user.PassWord;
+            var userMapped = _mapper.Map<UserCreateDto, User>(request, user);
+            userMapped.CreatedCode = setupCode.ManualEntryKey;
+            await _unitOfWork.SaveAsync();
+            return Response<UserCreateDto>.CreateSuccessResponse(request);
         }
         #endregion
         public async Task<Response<User>> GetUserByUserName(string userName)

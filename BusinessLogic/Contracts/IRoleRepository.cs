@@ -11,14 +11,14 @@ namespace BusinessLogic.Contracts
 {
     public interface IRoleRepository
     {
-        Task<Response<bool>> UpdateListRole(List<Role> roles, IEnumerable<GroupRole> groupRoles, bool isInit = false);
-        Task<Response<Guid>> UpdateUserRole(UpdateRoleUserDto request);
-        Task<Response<GetRolesByUserDtos>> GetUserRole(Guid userId);
-        Task<Response<GetRolesAndGroupDto>> DecentralizatedRole(Guid userId);
-        Task<Response<bool>> UpdateGroupUserRoleAsync(UpdateGroupRoleUserDto request);
-        Task<Response<List<GroupRoleAndRoleDto>>> GetListRoleAndGroupsAsync();
-        Task<Response<GetRolesByPositionDtos>> GetPositionRoleAsync(Guid positionId);
+        Task<bool> UpdateListRole(List<Role> roles, IEnumerable<GroupRole> groupRoles, bool isInit = false);
+        Task<Guid> UpdateUserRole(UpdateRoleUserDto request);
+        Task<GetRolesByUserDtos> GetUserRole(Guid userId);
+        Task<GetRolesAndGroupDto> DecentralizatedRole(Guid userId);
+        Task<bool> UpdateGroupUserRoleAsync(UpdateGroupRoleUserDto request);
+        Task<List<GroupRoleAndRoleDto>> GetListRoleAndGroupsAsync();
+        Task<GetRolesByPositionDtos> GetPositionRoleAsync(Guid positionId);
         Task<IEnumerable<Guid?>> GetGetUserCanApproveApi();
-        Task<Response<GetRolesByPositionDtos>> GetPositionRoleByUserIdAsync(Guid userId);
+        Task<GetRolesByPositionDtos> GetPositionRoleByUserIdAsync(Guid userId);
     }
 }

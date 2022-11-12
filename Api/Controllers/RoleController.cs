@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
@@ -21,92 +22,158 @@ namespace Api.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IRoleRepository _roleRepository;
-        public RoleController(IRoleRepository roleRepository)
+        private readonly ILogger<RoleController> _logger;
+        public RoleController(IRoleRepository roleRepository, ILogger<RoleController> logger)
         {
             _roleRepository = roleRepository;
+            _logger = logger;
         }
 
         [AuthenticationOnly]
         [Route("")]
         [HttpGet]
-        public async Task<Response<List<GroupRoleAndRoleDto>>> GetListRoleAndGroupsAsync()
+        public async Task<IActionResult> GetListRoleAndGroupsAsync()
         {
-            return await _roleRepository.GetListRoleAndGroupsAsync();
+            try
+            {
+                return Ok(await _roleRepository.GetListRoleAndGroupsAsync());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
         [RoleDescription("Cập nhật danh sách quyền")]
         [Route("update-role")]
         [HttpPost]
-        public async Task<Response<bool>> UpdateRole()
+        public async Task<IActionResult> UpdateRole()
         {
-            
-            Assembly asm = Assembly.GetExecutingAssembly();
-            var listController = asm.GetTypes()
-                .Where(type => typeof(ControllerBase).IsAssignableFrom(type))
-                .Select(n => new GroupRole { GroupRoleId = Guid.Empty, GroupRoleCode = n.Name.Replace("Controller", ""), GroupRoleName = ((RoleGroupDescriptionAttribute)n.GetCustomAttribute(typeof(RoleGroupDescriptionAttribute)))?.Description });
-
-            var controlleractionlist = asm.GetTypes()
+            try
+            {
+                Assembly asm = Assembly.GetExecutingAssembly();
+                var listController = asm.GetTypes()
                     .Where(type => typeof(ControllerBase).IsAssignableFrom(type))
-                    .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
-                    .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
-                    .Where(m => m.CustomAttributes.Any(n => n.AttributeType == typeof(RoleDescriptionAttribute)))
-                    .Select(x => new Role
-                    {
-                        RoleCode = x.DeclaringType.Name.Replace("Controller", "") + "-" + x.Name,
-                        RoleId = Guid.Empty,
-                        RoleName = ((RoleDescriptionAttribute)x.GetCustomAttribute(typeof(RoleDescriptionAttribute)))?.Description
-                    })
-                    .OrderBy(x => x.RoleCode).ToList();
-            return await _roleRepository.UpdateListRole(controlleractionlist, listController);
+                    .Select(n => new GroupRole { GroupRoleId = Guid.Empty, GroupRoleCode = n.Name.Replace("Controller", ""), GroupRoleName = ((RoleGroupDescriptionAttribute)n.GetCustomAttribute(typeof(RoleGroupDescriptionAttribute)))?.Description });
+
+                var controlleractionlist = asm.GetTypes()
+                        .Where(type => typeof(ControllerBase).IsAssignableFrom(type))
+                        .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+                        .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+                        .Where(m => m.CustomAttributes.Any(n => n.AttributeType == typeof(RoleDescriptionAttribute)))
+                        .Select(x => new Role
+                        {
+                            RoleCode = x.DeclaringType.Name.Replace("Controller", "") + "-" + x.Name,
+                            RoleId = Guid.Empty,
+                            RoleName = ((RoleDescriptionAttribute)x.GetCustomAttribute(typeof(RoleDescriptionAttribute)))?.Description
+                        })
+                        .OrderBy(x => x.RoleCode).ToList();
+                return Ok(await _roleRepository.UpdateListRole(controlleractionlist, listController));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể cập nhật dữ liệu quyền, vui lòng xem lại !");
+            }
+            
         }
 
         [RoleDescription("Phân quyền tài khoản")]
         [Route("update-user-role")]
         [HttpPost]
-        public async Task<Response<Guid>> UpdateUserRole([FromBody]UpdateRoleUserDto request)
+        public async Task<IActionResult> UpdateUserRole([FromBody]UpdateRoleUserDto request)
         {
-            return await _roleRepository.UpdateUserRole(request);
+            try
+            {
+                return Ok(await _roleRepository.UpdateUserRole(request));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể cập nhật dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
         [AuthenticationOnly]
         [Route("get-user-role/{userId}")]
         [HttpGet]
-        public async Task<Response<GetRolesByUserDtos>> GetUserRole(Guid userId)
+        public async Task<IActionResult> GetUserRole(Guid userId)
         {
-            return await _roleRepository.GetUserRole(userId);
+            try
+            {
+                return Ok(await _roleRepository.GetUserRole(userId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
         [AuthenticationOnly]
         [Route("decentralizated-role/{userId}")]
         [HttpGet]
-        public async Task<Response<GetRolesAndGroupDto>> DecentralizatedRole(Guid userId)
+        public async Task<IActionResult> DecentralizatedRole(Guid userId)
         {
-            return await _roleRepository.DecentralizatedRole(userId);
+            try
+            {
+                return Ok(await _roleRepository.DecentralizatedRole(userId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
         [AuthenticationOnly]
         [Route("get-position-role/{positionId}")]
         [HttpGet]
-        public async Task<Response<GetRolesByPositionDtos>> GetPositionRoleAsync(Guid positionId)
+        public async Task<IActionResult> GetPositionRoleAsync(Guid positionId)
         {
-            return await _roleRepository.GetPositionRoleAsync(positionId);
+            try
+            {
+                return Ok(await _roleRepository.GetPositionRoleAsync(positionId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
         [AuthenticationOnly]
         [Route("get-position-role-by-userId/{userId}")]
         [HttpGet]
-        public async Task<Response<GetRolesByPositionDtos>> GetPositionRoleByUserIdAsync(Guid userId)
+        public async Task<IActionResult> GetPositionRoleByUserIdAsync(Guid userId)
         {
-            return await _roleRepository.GetPositionRoleByUserIdAsync(userId);
+            try
+            {
+                return Ok(await _roleRepository.GetPositionRoleByUserIdAsync(userId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
 
 
         [RoleDescription("Cập nhật quyền cho vai trò")]
         [Route("decentralizated-group-role")]
         [HttpPost]
-        public async Task<Response<bool>> UpdateGroupUserRoleAsync([FromBody] UpdateGroupRoleUserDto request)
+        public async Task<IActionResult> UpdateGroupUserRoleAsync([FromBody] UpdateGroupRoleUserDto request)
         {
-            return await _roleRepository.UpdateGroupUserRoleAsync(request);
+            try
+            {
+                return Ok(await _roleRepository.UpdateGroupUserRoleAsync(request));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể lấy dữ liệu quyền, vui lòng xem lại !");
+            }
         }
     }
 }

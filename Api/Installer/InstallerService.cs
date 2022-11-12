@@ -20,7 +20,6 @@ namespace Api.Installer
 {
     public static class InstallerService
     {
-        [Obsolete]
         public static void Installer(this IServiceCollection services, IConfiguration Configuration)
         {
             // add dbcontext

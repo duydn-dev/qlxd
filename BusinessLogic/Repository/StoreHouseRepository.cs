@@ -32,7 +32,7 @@ namespace BusinessLogic.Repository
             try
             {
                 var result = new List<StoreHouseGetListDto>();
-                var cates = await _unitOfWork.GetAsQueryable<StoreHouseCategory>().ToArrayAsync();
+                var cates = await _unitOfWork.GetAsQueryable<StoreHouseCategory>().ToListAsync();
                 var storeHouse = _unitOfWork.GetAsQueryable<StoreHouse>()
                     .WhereIf(!string.IsNullOrEmpty(request.TextSearch), n => n.StoreName.Contains(request.TextSearch));
                 foreach (var item in cates)
@@ -47,7 +47,7 @@ namespace BusinessLogic.Repository
                     };
                     if(item.LocalityId != null && item.LocalityId != 0)
                     {
-                        var lstStore = (await storeHouse.Where(n => n.StoreHouseCategoryId == item.Id).ToArrayAsync()).Select((n, i) => new StoreHouseGetListDto
+                        var lstStore = (await storeHouse.Where(n => n.StoreHouseCategoryId == item.Id).ToListAsync()).Select((n, i) => new StoreHouseGetListDto
                         {
                             Index= (i + 1),
                             Id = n.Id,

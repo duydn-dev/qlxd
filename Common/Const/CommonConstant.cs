@@ -135,4 +135,10 @@ namespace Common.Const
         public const int NotUse = 0;
         public const int Use = 1;
     }
+    public static class DistributedCacheKey
+    {
+        public const string AllRole = "ALLZONE";
+        public const string UserRole = "USER";
+        public const string PositionRole = "POSITION";
+    }
 }

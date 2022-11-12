@@ -54,16 +54,16 @@ namespace BusinessLogic.Contracts
         Task<Response<bool>> ApproveAPI9(CreateQuyBinhOnGiumDto createQuyBinhOnGiumDto);
         Task<Response<bool>> RejectAsync(RejectApiDto request);
         Task<Response<object>> GetById(GetByIdRequestDto request);
-        Task<GiayDangKyKinhDoanh[]> ExportExcelApi1Async(GetListApiRequestDto request);
-        Task<HeThongPhanPhoi[]> ExportExcelApi2Async(GetListApiRequestDto request);
-        Task<SanXuat[]> ExportExcelApi3Async(GetListApiRequestDto request);
-        Task<TieuThu[]> ExportExcelApi4Async(GetListApiRequestDto request);
-        Task<Nhap[]> ExportExcelApi5Async(GetListApiRequestDto request);
-        Task<TonKho[]> ExportExcelApi6Async(GetListApiRequestDto request);
-        Task<NguyenLieu[]> ExportExcelApi7Async(GetListApiRequestDto request);
-        Task<Khac[]> ExportExcelApi8Async(GetListApiRequestDto request);
-        Task<QuyBinhOnGium[]> ExportExcelApi9Async(GetListApiRequestDto request);
-        Task<DuKienNhap[]> ExportExcelApi10Async(GetListApiRequestDto request);
+        Task<List<GiayDangKyKinhDoanh>> ExportExcelApi1Async(GetListApiRequestDto request);
+        Task<List<HeThongPhanPhoi>> ExportExcelApi2Async(GetListApiRequestDto request);
+        Task<List<SanXuat>> ExportExcelApi3Async(GetListApiRequestDto request);
+        Task<List<TieuThu>> ExportExcelApi4Async(GetListApiRequestDto request);
+        Task<List<Nhap>> ExportExcelApi5Async(GetListApiRequestDto request);
+        Task<List<TonKho>> ExportExcelApi6Async(GetListApiRequestDto request);
+        Task<List<NguyenLieu>> ExportExcelApi7Async(GetListApiRequestDto request);
+        Task<List<Khac>> ExportExcelApi8Async(GetListApiRequestDto request);
+        Task<List<QuyBinhOnGium>> ExportExcelApi9Async(GetListApiRequestDto request);
+        Task<List<DuKienNhap>> ExportExcelApi10Async(GetListApiRequestDto request);
         Task<Response<bool>> DeleteAsync(RejectApiDto request);
         Task<Response<bool>> ImportApi2Async();
     }

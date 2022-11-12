@@ -77,7 +77,7 @@ namespace BusinessLogic.Repository
                 int year = DateTime.Now.Year;   
                 if(request.FromDate.HasValue) year = request.FromDate.Value.Year;
                 // Chủng loại
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
 
                 var commonNhap = (from c in _unitOfWork.GetRepository<ChungLoai>().GetAll()
                                   join n in _unitOfWork.GetRepository<Nhap>().GetAll().Where(n => n.AprrovedStatus == ApprovedStatus.Approve) on c.MaChungLoai equals n.ChungLoai
@@ -127,7 +127,7 @@ namespace BusinessLogic.Repository
                                     n.Key.MaChungLoai,
                                     n.Key.TenChungLoai,
                                     TotalNhap = n.Select(m => m.ToTalNhap).Sum()
-                                }).ToArrayAsync();
+                                }).ToListAsync();
 
                 // lấy số lượng tiêu thụ
                 var queryTieuThu = await commonTieuThu.GroupBy(n => new { n.MaChungLoai, n.TenChungLoai })
@@ -136,7 +136,7 @@ namespace BusinessLogic.Repository
                                     n.Key.MaChungLoai,
                                     n.Key.TenChungLoai,
                                     TotalTieuThu = n.Select(m => m.ToTalNhap).Sum()
-                                }).ToArrayAsync();
+                                }).ToListAsync();
 
                 // lấy số tổng số lượng tồn
 
@@ -148,7 +148,7 @@ namespace BusinessLogic.Repository
                                     n.Key.MaChungLoai,
                                     n.Key.TenChungLoai,
                                     TotalTon = n.Select(m => m.ToTalTon).Sum()
-                                }).ToArrayAsync();
+                                }).ToListAsync();
 
                 var queryTonVungMien = await commonTon
                                         .GroupBy(n => new { n.MaChungLoai, n.TenChungLoai, n.VungMien })
@@ -162,7 +162,7 @@ namespace BusinessLogic.Repository
                                             n.Key.VungMien,
                                             TotalTonTheoMien = n.Select(m => m.ToTalTon).Sum()
                                         })
-                                        .ToArrayAsync();
+                                        .ToListAsync();
 
                 var query = from c in chungLoai
                             join n in queryNhap on c.MaChungLoai equals n.MaChungLoai
@@ -207,7 +207,7 @@ namespace BusinessLogic.Repository
                                         n.Key.MaChungLoai,
                                         n.Key.TenChungLoai,
                                         TotalSanXuat = n.Select(m => m.LuongSanXuat).Sum()
-                                    }).ToArrayAsync();
+                                    }).ToListAsync();
 
                 var sanXuat = (from c in chungLoai
                                join n in queryNhap on c.MaChungLoai equals n.MaChungLoai
@@ -237,7 +237,7 @@ namespace BusinessLogic.Repository
                                               n.NgayBc,
                                               n.SoDu,
                                           })
-                                  .ToArrayAsync();
+                                  .ToListAsync();
 
                 var binhOnResult = quyBinhOnGia
                     .GroupBy(n => new { n.MaDoiTuong, n.TenDoiTuong })
@@ -265,8 +265,8 @@ namespace BusinessLogic.Repository
                     {
                         for (int i = 1; i < 13; i++)
                         {
-                            var existItem = await binhOnNamNay.Where(n => n.NgayBc.Value.Month == i && n.MaDoiTuong == item.MaDoiTuong).ToArrayAsync();
-                            if(existItem?.Length <= 0)
+                            var existItem = await binhOnNamNay.Where(n => n.NgayBc.Value.Month == i && n.MaDoiTuong == item.MaDoiTuong).ToListAsync();
+                            if(existItem?.Count <= 0)
                             {
                                 binhOnLast.BinhOnGiaMonthDtos.Add(new BinhOnGiaMonthDto
                                 {

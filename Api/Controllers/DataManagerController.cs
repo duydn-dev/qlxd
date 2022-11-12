@@ -355,12 +355,12 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi1Async(request);
-                var tinh = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Tinh).ToArrayAsync();
-                var huyen = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Huyen).ToArrayAsync();
-                var xa = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Xa).ToArrayAsync();
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
+                var tinh = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Tinh).ToListAsync();
+                var huyen = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Huyen).ToListAsync();
+                var xa = await _unitOfWork.GetRepository<Locality>().GetByExpression(n => n.Type == LocalityType.Xa).ToListAsync();
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
 
-                if (data?.Length > 0)
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -391,15 +391,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 15].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 15].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 15].Style.WrapText = true;
 
                         string newFileName = $"api1_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -424,9 +424,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi2Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
 
-                if (data?.Length > 0)
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -450,15 +450,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 8].Value = item.ThoiGianCapNhat.Value.ToString("dd/MM/yyyy HH:mm:ss");
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 8].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 8].Style.WrapText = true;
 
                         string newFileName = $"api2_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -483,9 +483,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi3Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -506,15 +506,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 5].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 5].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 5].Style.WrapText = true;
 
                         string newFileName = $"api4_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -539,9 +539,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi4Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -563,15 +563,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 6].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.WrapText = true;
 
                         string newFileName = $"api4_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -596,9 +596,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi5Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -620,15 +620,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 6].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.WrapText = true;
 
                         string newFileName = $"api5_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -653,9 +653,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi6Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -677,15 +677,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 6].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.WrapText = true;
 
                         string newFileName = $"api6_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -710,9 +710,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi7Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -734,15 +734,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 6].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 6].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 6].Style.WrapText = true;
 
                         string newFileName = $"api7_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -767,9 +767,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi8Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -793,15 +793,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 7].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 7].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 7].Style.WrapText = true;
 
                         string newFileName = $"api8_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -826,9 +826,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi9Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -848,15 +848,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 4].Value = CommonFunction.GetApprovedStatusName(item.AprrovedStatus);
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 4].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 4].Style.WrapText = true;
 
                         string newFileName = $"api9_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);
@@ -881,9 +881,9 @@ namespace Api.Controllers
             try
             {
                 var data = await _dataManagerRepository.ExportExcelApi10Async(request);
-                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToArrayAsync();
-                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToArrayAsync();
-                if (data?.Length > 0)
+                var doiTuong = await _unitOfWork.GetRepository<DoiTuongQuanLy>().GetAll().ToListAsync();
+                var chungLoai = await _unitOfWork.GetRepository<ChungLoai>().GetAll().ToListAsync();
+                if (data?.Count > 0)
                 {
                     using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
                     {
@@ -908,15 +908,15 @@ namespace Api.Controllers
                             workSheet.Cells[i, 9].Value = item.NgayBC.ToString("dd/MM/yyyy HH:mm:ss");
                             i++;
                         }
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Top.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Bottom.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Left.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.Border.Right.Color.SetColor(Color.Black);
-                        workSheet.Cells[3, 1, (data.Length + 2), 9].Style.WrapText = true;
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Top.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Bottom.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Left.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.Border.Right.Color.SetColor(Color.Black);
+                        workSheet.Cells[3, 1, (data.Count + 2), 9].Style.WrapText = true;
 
                         string newFileName = $"api10_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
                         string outputPath = Path.Combine(_webHostEnvironment.WebRootPath, "Temps", newFileName);

@@ -50,11 +50,19 @@ namespace Api.Controllers
         [Route("register")]
         [HttpPost]
         [AllowAnonymous]
-        public async Task<Response<UserCreateDto>> Register([FromBody] UserCreateDto request)
+        public async Task<IActionResult> Register([FromBody] UserCreateDto request)
         {
-            request.UserId = Guid.NewGuid();
-            request.CreatedBy = request.UserId;
-            return await _userRepository.Create(request);
+            try
+            {
+                request.UserId = Guid.NewGuid();
+                request.CreatedBy = request.UserId;
+                return Ok(await _userRepository.Create(request));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể tạo dữ liệu người dùng, vui lòng thử lại !");
+            }
         }
 
         [RoleDescription("Xem danh sách tài khoản")]
@@ -96,34 +104,69 @@ namespace Api.Controllers
         [RoleDescription("Thêm mới tài khoản")]
         [Route("create")]
         [HttpPost]
-        public async Task<Response<UserCreateDto>> Create([FromBody] UserCreateDto request)
+        public async Task<IActionResult> Create([FromBody] UserCreateDto request)
         {
-            return await _userRepository.Create(request);
+            try
+            {
+                return Ok(await _userRepository.Create(request));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể thêm mới tài khoản, vui lòng xem lại !");
+            }
         }
 
         [RoleDescription("Cập nhật tài khoản")]
         [Route("update/{userId}")]
         [HttpPut]
-        public async Task<Response<UserCreateDto>> Update(Guid userId, [FromBody] UserCreateDto request)
+        public async Task<IActionResult> Update(Guid userId, [FromBody] UserCreateDto request)
         {
-            request.UserId = userId;
-            return await _userRepository.Update(request);
+            try
+            {
+                request.UserId = userId;
+                var response = await _userRepository.Update(request);
+                if (response.Success) return Ok(response.ResponseData);
+                return StatusCode(response.StatusCode, response.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể chỉnh sửa tài khoản, vui lòng xem lại !");
+            }
+            
         }
 
         [RoleDescription("Xóa tài khoản")]
         [Route("delete/{userId}")]
         [HttpDelete]
-        public async Task<Response<bool>> Delete(Guid userId)
+        public async Task<IActionResult> Delete(Guid userId)
         {
-            return await _userRepository.Delete(userId);
+            try
+            {
+                return Ok(await _userRepository.Delete(userId));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể xóa tài khoản, vui lòng xem lại !");
+            }
         }
 
         [RoleDescription("Xóa nhiều tài khoản")]
         [Route("delete")]
         [HttpDelete]
-        public async Task<Response<bool>> DeleteMany([FromQuery]List<Guid> userIds)
+        public async Task<IActionResult> DeleteMany([FromQuery]List<Guid> userIds)
         {
-            return await _userRepository.DeleteMany(userIds);
+            try
+            {
+                return Ok(await _userRepository.DeleteMany(userIds));
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, "Không thể xóa tài khoản, vui lòng xem lại !");
+            }
         }
         
         [RoleDescription("Upload avatar người dùng")]
